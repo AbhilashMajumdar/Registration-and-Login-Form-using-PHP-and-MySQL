@@ -1,0 +1,32 @@
+export const INITIAL_STATE = {
+  verifyMtn: {},
+};
+
+const sendMessageReducer  = (state = INITIAL_STATE, action) =>
+  produce(state, draft => {
+    switch (action.type) {
+      case types.VERIFY_MTN_REQUEST_DATA_CLEAR: 
+        draft.verifyMtn[action.payload.selectedCallkey] = {};
+        break;
+      case types.VERIFY_MTN_REQUEST: 
+        draft.verifyMtn[action.payload.selectedCallkey] = {
+          isLoading: true,
+          data: {},
+        };
+        break;
+      case types.VERIFY_MTN_SUCCESS: 
+        draft.verifyMtn[action.payload.selectedCallkey] = {
+          data: action.payload.data,
+          isLoading: false,
+        };
+        break;
+      case types.VERIFY_MTN_FAILURE: 
+        draft.verifyMtn[action.error.selectedCallkey] = {
+          error: action.error.error,
+          isLoading: false,
+        };
+        break;
+    }
+  });
+
+export default sendMessageReducer;
